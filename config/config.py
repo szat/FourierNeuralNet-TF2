@@ -19,8 +19,12 @@ GAMMA = 0.5
 MODES = 12
 WIDTH = 32
 
+# R is the subsampling
 R = 5
-H = int(((421 - 1) / R) + 1)
+# Was like this, I think this is incorrect
+# H = int(((421 - 1) / R) + 1)
+# H is the number of tics, I think
+H = int(((241 - 1) / R) + 1)
 S = H
 
 
