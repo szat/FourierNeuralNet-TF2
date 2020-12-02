@@ -29,10 +29,12 @@ grid = grid.reshape(1,S_,S_,2)
 
 # numpy -> tensor
 x_train = tf.convert_to_tensor(x_train, dtype=tf.float32)
+y_train = tf.convert_to_tensor(y_train, dtype=tf.float32)
 grid = tf.convert_to_tensor(grid, dtype=tf.float32)
 x_train = tf.expand_dims(x_train, axis=3)
 grid = tf.repeat(grid, repeats = N_TRAIN, axis = 0)
 x_train = tf.concat([x_train, grid], axis=3)
+
 
 optimizer = tf.keras.optimizers.SGD(learning_rate=1e-3)
 my_model = MyModel(name="the_model")
@@ -40,3 +42,4 @@ my_model.compile(loss="mse", optimizer=optimizer, metrics=["accuracy"])
 my_model.build(input_shape=x_train.shape)
 # Use fit if all of the data can fit into RAM
 my_model.fit(x_train, y_train, batch_size=32, epochs=1)
+
