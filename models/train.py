@@ -1,7 +1,13 @@
+import os
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+import tensorflow as tf
+
 from config.config import *
 from my_utils.my_utils import *
 from models.model_a0 import *
 from tensorflow.keras.optimizers import Adam
+
+
 
 reader = MatReader(TRAIN_PATH)
 x_train = reader.read_field('coeff')[:N_TRAIN,::R,::R]
@@ -43,3 +49,20 @@ my_model.build(input_shape=x_train.shape)
 # Use fit if all of the data can fit into RAM
 my_model.fit(x_train, y_train, batch_size=32, epochs=1)
 
+Ha = tf.keras.layers.Input(shape=(1,2,3), name='Ha')
+Hq = tf.keras.layers.Input(shape=(1,2,3), name='Hq')
+your_coattention_layer = tf.keras.layers.Dense(12, name='your_coattention_layer')
+# this part that I think you forgot
+Ca = your_coattention_layer(Ha)
+cQ = your_coattention_layer(Hq)
+out1 = tf.keras.layers.Dense(123, name='your_Ca_layer')(Ca)
+out2 = tf.keras.layers.Dense(123, name='your_Cq_later')(cQ)
+M = tf.keras.Model(inputs=[Ha,Hq], outputs=[out1,out2])
+M.summary()
+from tensorflow.keras.utils import plot_model
+plot_model(M, to_file='Example.png')
+
+my_layer = FourierBlock(4,4,4,4)
+M2 = tf.keras.Model(my_layer)
+M2.build()
+M2.summary()

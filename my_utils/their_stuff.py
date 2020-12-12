@@ -35,7 +35,10 @@ bn0 = torch.nn.BatchNorm2d(width)
 ttt_w0_bn0 = bn0(ttt_w0)
 # torch.Size([10, 32, 49, 49])
 
+ttt_w0_bn0 = ttt_w0_bn0.permute(0, 2, 3, 1)
+# torch.Size([10, 49, 49, 32])
 
-ttt.view(batchsize, width, -1).shape
+w1 = nn.Linear(width, 128)
+w2 = nn.Linear(128, 1)
 
-ttt_w0 = w0(ttt)
+t_end = w1(ttt_w0_bn0)
